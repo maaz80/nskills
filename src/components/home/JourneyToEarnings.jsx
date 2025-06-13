@@ -6,6 +6,7 @@ import { TfiWrite } from 'react-icons/tfi';
 import { LiaCoinsSolid } from 'react-icons/lia';
 import { PiTargetBold } from 'react-icons/pi';
 import { GoTrophy } from 'react-icons/go';
+import { FaArrowRightLong } from 'react-icons/fa6';
 
 const timelineSteps = [
   {
@@ -182,7 +183,7 @@ const JourneyTimeline = () => {
         <div className="bg-white/10 backdrop-blur-md  p-4 lg:p-6 border border-white/20">
           <div className="flex justify-between items-start mb-6">
             <h2 className="text-xl lg:text-2xl font-semibold text-white">Does Our Programs Look Expensive?</h2>
-            <div className="hidden bg-black text-white w-36 h-8 text-xs lg:text-sm font-medium lg:flex items-center justify-center hover:scale-102 active:scale-98 transition-all duration-300 cursor-pointer">
+            <div className="hidden border border-white bg-black text-white w-36 h-8 text-xs lg:text-sm font-medium lg:flex items-center justify-center hover:scale-102 active:scale-98 transition-all duration-300 cursor-pointer">
               Apply Now →
             </div>
           </div>
@@ -200,13 +201,13 @@ const JourneyTimeline = () => {
               <span className="text-green-400 mr-3 text-sm lg:text-lg">✓</span>
               <div>
                 <p className="text-white text-sm lg:text-base font-medium">Scholarship & Selection Test consists of 10 MCQ & 2 Coding Questions</p>
-                <p className="text-blue-200 text-xs lg:text-sm">From Attitude, Aptitude, Computer Fundamentals, & C Programming</p>
+                <p className="text-blue-200 text-xs lg:text-sm">From Aptitude, Computer Fundamentals, & C Programming</p>
               </div>
             </div>
             
             <div className="flex items-start">
               <span className="text-green-400 mr-3 text-sm lg:text-lg">✓</span>
-              <p className="text-white text-sm lg:text-base font-medium">You can start preparation for this test from our Free YouTube Course (CSETO)</p>
+              <p className="text-white text-sm lg:text-base font-medium flex items-end lg:items-center gap-1">You can start preparation for this test from our Free YouTube Course <button className='flex items-center gap-1 border border-white px-2 bg-black text-xs py-1 font-medium'>CSEO<FaArrowRightLong /></button></p>
             </div>
           </div>
              <div className="lg:hidden bg-black border border-white text-white w-full mt-6 h-8 text-xs lg:text-sm font-medium flex items-center justify-center hover:scale-102 active:scale-98 transition-all duration-300 cursor-pointer">
