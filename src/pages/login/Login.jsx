@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { GoArrowRight } from "react-icons/go";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -106,7 +107,7 @@ const Login = () => {
       >
 
 
-        <h2 className="text-xl md:text-2xl lg:text-4xl font-medium text-white mb-5 ">
+        <h2 className="page-heading mb-5 ">
           ENTER YOUR NUMBER
         </h2>
         {/* <p className=" text-sm mb-3 text-black">
@@ -188,7 +189,7 @@ const Login = () => {
             onInput={(e) => {
               e.target.value = e.target.value.replace(/[^0-9]/g, "");
             }}
-            className={`w-full p-3 border text-lg mb-2 text-white placeholder-gray-400 focus:outline-none transition duration-300 focus:ring-1
+            className={`w-full p-3 border text-lg  text-white placeholder-gray-400 focus:outline-none transition duration-300 focus:ring-1
     ${errors?.phoneNumber
                 ? "border-red-500 focus:ring-red-500"
                 : isValid
@@ -213,14 +214,14 @@ const Login = () => {
               handleSubmit(onSubmit)();
             }
           }}
-          className={`flex items-center mt-3 justify-center gap-2 w-40 ml-auto py-3 text-lg font-semibold transition duration-300 ${sendingOtp || !isValid
+          className={`flex items-center button-spacing-top primary-button-styling justify-center gap-2 ml-auto py-3 text-lg transition duration-300 ${sendingOtp || !isValid
               ? 'bg-white/20 cursor-not-allowed text-white/50 border border-white/30'
               : 'bg-white cursor-pointer hover:scale-101 text-black active:scale-98 border border-white'
             }`}
           disabled={sendingOtp} // Only actually disable when sending OTP
         >
           Next
-          <FaArrowRight className="text-xl" />
+         <GoArrowRight className="text-xl" />
         </button>
 
 

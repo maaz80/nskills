@@ -37,7 +37,7 @@ const timelineSteps = [
     id: 4,
     title: "Pay Your Remaining Fee",
     subtitle: "After Scholarship Discount",
-    description: "Pay only after placement",
+    description: "",
     icon: <LiaCoinsSolid />,
     bgColor: "bg-black"
   },
@@ -71,9 +71,9 @@ const JourneyTimeline = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-2xl md:text-6xl font-semibold text-white mb-2 lg:mb-4"
+          className="text-2xl md:text-4xl font-semibold text-white mb-2 lg:mb-4"
         >
-          Journey to Earnings
+          JOURNEY TO EARNINGS
         </motion.h1>
       </div>
 
@@ -182,7 +182,7 @@ const JourneyTimeline = () => {
       >
         <div className="bg-white/10 backdrop-blur-md  p-4 lg:p-6 border border-white/20">
           <div className="flex justify-between items-start mb-6">
-            <h2 className="text-xl lg:text-2xl font-semibold text-white">Does Our Programs Look Expensive?</h2>
+            <h2 className="text-xl lg:text-2xl font-semibold text-white ">DOES OUR PROGRAMS LOOKS EXPENSIVE?</h2>
             <div className="hidden border border-white bg-black text-white w-36 h-8 text-xs lg:text-sm font-medium lg:flex items-center justify-center hover:scale-102 active:scale-98 transition-all duration-300 cursor-pointer">
               Apply Now →
             </div>
@@ -193,7 +193,7 @@ const JourneyTimeline = () => {
               <span className="text-green-400 mr-3 text-sm lg:text-lg">✓</span>
               <div>
                 <p className="text-white text-sm lg:text-base font-medium">Apply for our Scholarship & Selection Test</p>
-                <p className="text-blue-200 text-xs lg:text-sm">& Get UFP 30% Scholarship</p>
+                <p className="text-blue-200 text-xs lg:text-sm">& Get Upt 90% Scholarship</p>
               </div>
             </div>
             

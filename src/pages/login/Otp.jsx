@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { BiPencil } from "react-icons/bi";
 import { FiArrowLeft } from "react-icons/fi";
 import { toast } from "react-toastify";
+import { GoArrowRight } from "react-icons/go";
 
 const Otp = () => {
   const navigate = useNavigate();
@@ -143,14 +144,14 @@ const Otp = () => {
           )}
         </div>
   
-        <h1 className={`${isLogin ? 'text-3xl text-white md:text-2xl lg:text-4xl font-extrabold':'text-xl md:text-2xl lg:text-4xl font-medium '} mb-4 `}>
-          {isLogin ? `Welcome, ${userName}` : "Registration"}
+        <h1 className={`page-heading mb-4 `}>
+          {isLogin ? `WELCOME, MAAZ` : "REGISTRATION"}
         </h1>
 
         {/* Name Input */}
         {!isLogin && (
-          <div className={`space-y-1 text-white flex flex-col w-full`}>
-            <label className="text-xs font-medium ">Enter your Name</label>
+          <div className={`space-y-1 heading-color flex flex-col w-full`}>
+            <label className="text-xs font-medium ">ENTER YOUR NAME</label>
             <input
               type="text"
               placeholder="Full Name"
@@ -196,8 +197,8 @@ const Otp = () => {
         )}
 
         {/* OTP Input */}
-        <div className="space-y-2 text-white mt-4">
-          <label className="text-xs font-medium ">Enter OTP</label>
+        <div className="space-y-2 heading-color mt-4">
+          <label className="text-xs font-medium ">ENTER OTP</label>
           <OTPInput
             value={otp}
             onChange={(value) => {
@@ -240,33 +241,14 @@ const Otp = () => {
         {/* <ResendButton fullPhone={phone} setIsResending={setIsResending} onResendSuccess={() => setValue("otp", "")}/> */}
 
         <div className="flex flex-col w-full  lg:flex-row gap-3 items-center justify-between mt-6">
-        {/* Submit Button - SignUp & Get ₹50 */}
-{
-  <button
-    type="submit"
-    className={`${
-      isLogin
-        ? "opacity-0 pointer-events-none"
-        : `${
-            !(isValid && otp?.length === 6)
-              ? "bg-white/20 text-white/50 cursor-not-allowed border border-white/30"
-              : "bg-white text-black hover:bg-white/90 cursor-pointer hover:scale-95 transition duration-300 border border-white"
-          }`
-    } flex items-center justify-center gap-2 md:gap-3 w-full lg:w-[200px] py-3 font-semibold transition duration-300 shadow-lg`}
-    disabled={authenticating}
-    name="getReward"
-  >
-    SignUp & Get ₹50
-    <FaArrowRight className="text-lg md:text-xl" />
-  </button>
-}
+      
 
 {/* Submit Button - Login/Sign Up */}
 <button
   type="submit"
   name="defaultSignup"
   className={`
-    flex items-center justify-center gap-2 md:gap-3 w-full lg:w-[120px] py-3 font-semibold shadow-lg transition duration-300 border-2
+    flex items-center justify-center gap-2 md:gap-3 ml-auto button-spacing-top primary-button-styling py-3 font-semibold shadow-lg transition duration-300 border-2
     ${
       isLogin 
         ? !(isValid && otp?.length === 6)
@@ -280,7 +262,7 @@ const Otp = () => {
   disabled={authenticating}
 >
   {isLogin ? "Login" : "Sign Up"}
-  <FaArrowRight className="text-lg md:text-xl" />
+  <GoArrowRight className="text-lg md:text-xl" />
 </button>
         </div>
       </form>

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { useState } from "react";
+import { GoArrowRight } from "react-icons/go";
 
 const UserDetailsForm = () => {
   const navigate = useNavigate();
@@ -37,18 +38,17 @@ navigate('/home');
           </Link>
 
           {/* Welcome Text */}
-          <h1 className="text-3xl lg:text-6xl font-extrabold tracking-tight drop-shadow-lg  ml-14 lg:ml-0">
-            Welcome,{" "}
+          <h1 className="text-3xl lg:text-6xl font-semibold tracking-tight drop-shadow-lg  ml-14 lg:ml-0">
+            WELCOME,{" "}
             <span className="text-white">
-              Maaz
+              MAAZ
             </span>
           </h1>
 
           {/* Sub Text */}
-          <p className="text-lg lg:text-2xl font-medium text-white/90 drop-shadow shadow-white">
-            Complete your profile & get{" "}
-            <span className="font-bold text-orange">₹50</span> instant
-            reward 🎁
+          <p className="page-heading drop-shadow shadow-white">
+            COMPLETE YOUR PROFILE & GET{" "}
+            <span className="font-bold text-orange">₹50</span> INSTANT REWARD 🎁
           </p>
         </div>
       </div>
@@ -59,10 +59,10 @@ navigate('/home');
           {/* Left Column - Information */}
           <div className="space-y-8 hidden lg:block">
             <div>
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Why We Need This Information
+              <h2 className="page-heading mb-6">
+                WHY WE NEED THIS INFORMATION
               </h2>
-              <div className="space-y-4 text-gre-700 leading-relaxed">
+              <div className="space-y-4 text-grey-700 leading-relaxed">
                 <p>
                   Your professional background helps us tailor our services
                   specifically to your needs. We understand that every
@@ -79,8 +79,8 @@ navigate('/home');
             </div>
 
             <div className="bg-white/10 p-6 ">
-              <h3 className="text-xl font-semibold text-white mb-3">
-                Instant Benefits
+              <h3 className="page-heading mb-3">
+                INSTANT BENIFITS
               </h3>
               <ul className="space-y-2 text-grey-700">
                 <li className="flex items-center">
@@ -103,8 +103,8 @@ navigate('/home');
           <div className="space-y-8">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               <div className="bg-white/10 p-4  block lg:hidden">
-                <h3 className="text-lg font-semibold text-white mb-3">
-                  Instant Benefits
+                <h3 className="page-heading mb-3">
+                  INSTANT BENIFITS
                 </h3>
                 <ul className="space-y-2 text-grey-200 text-sm">
                   <li className="flex items-center">
@@ -123,8 +123,8 @@ navigate('/home');
               </div>
               {/* Profession Section */}
               <div className="mb-8">
-                <label className="block text-lg font-semibold text-white mb-4">
-                  Professional Background
+                <label className="block page-heading mb-4">
+                  PROFESSIONAL BACKGROUND
                 </label>
                 <div className="relative">
                   <select
@@ -155,8 +155,8 @@ navigate('/home');
               </div>
               {/* Income Section */}
               <div className="mb-8">
-                <label className="block text-lg font-semibold text-white mb-6">
-                  Annual Income Range
+                <label className="block page-heading mb-6">
+                  ANNUAL INCOME RANGE
                 </label>
                 <div className="space-y-4">
                   <div className="border-2 border-grey-200  p-4 hover:border-white transition-colors cursor-pointer">
@@ -253,12 +253,12 @@ navigate('/home');
               {/* Submit Button */}
               <button
                 type="submit"
-                className={`cursor-pointer w-full flex items-center justify-center gap-3 bg-white hover:bg-white/90 text-black py-2 lg:py-5 px-2 lg:px-8  text-lg lg:text-xl font-semibold transition-colors disabled:bg-white/20 disabled:text-white/50 disabled:cursor-not-allowed disabled:opacity-70 ${!isValid && "bg-white/20 text-white/50 cursor-not-allowed opacity-70"
+                className={`cursor-pointer w-full flex items-center justify-center gap-3 bg-white hover:bg-white/90 text-black py-2 lg:py-5 px-2 lg:px-8  text-lg lg:text-xl primary-button-styling transition-colors disabled:bg-white/20 disabled:text-white/50 disabled:cursor-not-allowed disabled:opacity-70 ${!isValid && "bg-white/20 text-white/50 cursor-not-allowed opacity-70"
                   }`}
                 disabled={loading}
               >
-                Complete Profile & Claim ₹50
-                <FaArrowRight className="w-6 h-6" />
+               Submit
+                <GoArrowRight className="w-6 h-6" />
               </button>
 
             </form>
