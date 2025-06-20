@@ -53,12 +53,12 @@ const ProgramsTable = () => {
 
   // Mobile View - Single Program with Dropdown
   const MobileView = () => (
-    <div className="w-full mx-auto p-4 lg:p-6 nav-bgcolor border border-gray-700 text-white shadow-2xl space-y-6 rounded-xl lg:hidden">
+    <div className="w-full mx-auto p-4 lg:p-6 nav-bgcolor border border-gray-700 text-white shadow-2xl space-y-6  lg:hidden">
       {/* Dropdown Header */}
       <div className="relative">
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="w-full flex items-center justify-between nav-bgcolor/50 border border-gray-600 px-5 py-4 text-sm font-semibold hover:from-gray-700 hover:to-gray-600 transition-all duration-300 rounded-lg shadow-lg hover:shadow-xl transform cursor-pointer active:scale-95 ease-in-out"
+          className="w-full flex items-center justify-between nav-bgcolor/50 border border-gray-600 px-5 py-4 text-sm font-semibold hover:from-gray-700 hover:to-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl transform cursor-pointer active:scale-95 ease-in-out"
         >
           <div className="flex items-center gap-3">
             <div className="text-blue-400">
@@ -70,14 +70,14 @@ const ProgramsTable = () => {
           </div>
           <ChevronDown
             className={`w-5 h-5 transition-all duration-300 text-gray-400 ${
-              dropdownOpen ? "rotate-180 text-blue-400" : ""
-            }`}
+  dropdownOpen ? "rotate-180 text-blue-400" : "rotate-0"
+}`}
           />
         </button>
 
         <div
-          className={`absolute left-0 mt-2 w-full bg-primary border border-gray-600 overflow-hidden shadow-2xl rounded-lg transition-all duration-300 ease-in-out z-20
-            ${dropdownOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"}
+          className={`absolute left-0 mt-2 w-full bg-primary border border-gray-600 overflow-hidden shadow-2xl transition-all duration-1000 ease-linear z-20
+            ${dropdownOpen ? "opacity-100 max-h-80 translate-y-2 pointer-events-auto" : "opacity-0 max-h-0 -translate-y-2 pointer-events-none"}
           `}
         >
           {programs.map((program) => (
@@ -87,8 +87,8 @@ const ProgramsTable = () => {
                 setSelectedProgram(program);
                 setDropdownOpen(false);
               }}
-              className={`w-full text-sm text-left px-5 py-4 flex items-center gap-3 hover:nav-bgcolor transition-all duration-300 ${
-                program.id === selectedProgram.id ? "nav-bgcolor border-l-4 border-white " : ""
+              className={`w-full text-sm text-left px-5 py-4 flex items-center gap-3 hover:nav-bgcolor transition-all duration-600 ${
+                program.id === selectedProgram.id ? "nav-bgcolor border-l-4  border-white " : ""
               }`}
             >
               <div className="text-blue-400">{program.icon}</div>
@@ -99,7 +99,7 @@ const ProgramsTable = () => {
       </div>
 
       {/* Program Details Table */}
-      <div className="bg-primary border border-gray-700 rounded-xl overflow-hidden shadow-xl">
+      <div className="bg-primary border border-gray-700 overflow-hidden shadow-xl">
         <table className="w-full">
           <tbody>
             {selectedProgram.details.map((detail, index) => (
@@ -111,7 +111,7 @@ const ProgramsTable = () => {
                   <span className="text-gray-300 text-xs font-medium group-hover:text-white transition-colors duration-300">{detail.label}</span>
                 </td>
                 <td className="px-2 lg:px-6  text-right">
-                  <span className="font-semibold text-xs text-white bg-gradient-to-r from-gray-700 to-gray-600 px-3 py-1 rounded-lg shadow-md group-hover:from-gray-600 group-hover:to-gray-500 transition-all duration-300">
+                  <span className="font-semibold text-xs text-white bg-gradient-to-r from-gray-700 to-gray-600 px-3 py-1 shadow-md group-hover:from-gray-600 group-hover:to-gray-500 transition-all duration-300">
                     {detail.value}
                   </span>
                 </td>
@@ -137,7 +137,7 @@ const ProgramsTable = () => {
         {programs.map((program) => (
           <div
             key={program.id}
-            className="nav-bgcolor border border-gray-700 text-white shadow-2xl rounded-xl p-6 space-y-5 "
+            className="nav-bgcolor border border-gray-700 text-white shadow-2xl p-6 space-y-5 "
           >
             {/* Program Header */}
             <div className="flex items-center gap-3 pb-4 border-b border-gray-700">
@@ -148,7 +148,7 @@ const ProgramsTable = () => {
             </div>
 
             {/* Program Details Table */}
-            <div className="bg-primary border border-gray-700 rounded-xl overflow-hidden shadow-xl h-[230px] px-3">
+            <div className="bg-primary border border-gray-700 overflow-hidden shadow-xl h-[230px] px-3">
               <table className="w-full ">
                 <tbody>
                   {program.details.map((detail, index) => (
@@ -160,7 +160,7 @@ const ProgramsTable = () => {
                         <span className="text-gray-300 font-medium text-sm">{detail.label}</span>
                       </td>
                       <td className=" py-4 text-right">
-                        <span className="font-semibold text-white bg-gradient-to-r from-gray-700 to-gray-600 px-2 py-1 rounded-lg shadow-md text-sm">
+                        <span className="font-semibold text-white bg-gradient-to-r from-gray-700 to-gray-600 px-2 py-1 shadow-md text-sm">
                           {detail.value}
                         </span>
                       </td>
@@ -174,7 +174,7 @@ const ProgramsTable = () => {
       </div>
 
       {/* Note */}
-      <div className="mt-6 bg-primary border border-gray-700 border-opacity-50 rounded-lg p-4">
+      <div className="mt-6 bg-primary border border-gray-700 border-opacity-50 p-4">
         <p className="text-gray-400 text-sm text-start font-medium">
           *Placement assurance subject to eligibility & performance.
         </p>
