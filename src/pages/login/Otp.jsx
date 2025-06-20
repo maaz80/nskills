@@ -112,7 +112,7 @@ const Otp = () => {
         <div className="h-[25vh] lg:h-screen"> </div>
         <Link
           to="/"
-          className="absolute text-white bg-primary rounded-full p-3 text-3xl lg:text-3xl font-bold top-4 lg:top-5 left-1 lg:left-4 z-20 hover:scale-102 active:scale-98 transition duration-300"
+          className="absolute text-white bg-primary rounded-full p-3 text-2xl top-4 lg:top-5 left-1 lg:left-4 z-20 hover:scale-102 active:scale-98 transition duration-300"
         >
           <FiArrowLeft />
         </Link>
@@ -124,7 +124,7 @@ const Otp = () => {
         autoComplete="off"
         id="otp-form"
         className="relative p-4 lg:p-10 w-full lg:w-[34%] flex flex-col items-start justify-start lg:justify-center ml-0 lg:-ml-5 bg-primary overflow-y-auto max-h-screen lg:h-screen"
-        style={{ minHeight: "65vh" }}
+        style={{ minHeight: "75vh" }}
       >
         <div className="flex items-center justify-center mb-3 lg:mb-4 text-sm lg:text-lg font-medium text-white ">
           {phone && (
@@ -253,10 +253,10 @@ const Otp = () => {
       isLogin 
         ? !(isValid && otp?.length === 6)
           ? "bg-white/20 text-white/50 border-white/30 cursor-not-allowed"
-          : "bg-transparent text-white border-white hover:bg-white hover:text-black hover:scale-95 cursor-pointer"
+          : "bg-white cursor-pointer hover:scale-101 text-black active:scale-98 border border-white"
         : !(isValid && otp?.length === 6)
         ? "bg-white/20 text-white/50 border-white/30 cursor-not-allowed"
-        : "bg-transparent text-white border-white hover:bg-white hover:text-black hover:scale-95 cursor-pointer"
+        : "bg-white cursor-pointer hover:scale-101 text-black active:scale-98 border border-white"
     }
   `}
   disabled={authenticating}

@@ -103,7 +103,7 @@ const Login = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="relative p-4 lg:p-10 w-full lg:w-[32%] flex flex-col items-start justify-start lg:justify-center ml-0 bg-primary overflow-y-auto max-h-screen lg:h-screen "
-        style={{ minHeight: "65vh" }}
+        style={{ minHeight: "75vh" }}
       >
 
 
