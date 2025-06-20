@@ -14,13 +14,13 @@ const UserDetailsForm = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [errors, setErrors] = useState({});
 
-const {
-  register,
-  handleSubmit,
-  formState: { errors: formErrors },
-} = useForm({
-  mode: "onChange",
-});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors: formErrors },
+  } = useForm({
+    mode: "onChange",
+  });
 
 
   const [loading, setLoading] = useState(false);
@@ -72,14 +72,14 @@ const {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-const onSubmit = (data) => {
-  console.log(data); // just to check what values aa rahe hain
-  navigate('/home');
-};
+  const onSubmit = (data) => {
+    console.log(data); // just to check what values aa rahe hain
+    navigate('/home');
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" })
-  },[])
+  }, [])
   return (
     <div className="min-h-screen bg-primary">
       {/* Header Section */}
@@ -159,7 +159,7 @@ const onSubmit = (data) => {
 
           {/* Right Column - Form */}
           <div className="space-y-8">
-           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 
               <div className="bg-white/10 p-4  block lg:hidden">
                 <h3 className="page-heading mb-3">
@@ -186,32 +186,36 @@ const onSubmit = (data) => {
                   PROFESSIONAL BACKGROUND
                 </label>
                 <div className="relative dropdown-container">
-                  <div 
-                    className="relative w-full px-4 py-4 text-lg border-2 border-gray-300 focus:border-white outline-none transition-colors text-white pr-10 bg-primary cursor-pointer hover:bg-white hover:primary-text "
+                  <div
+                    className="relative w-full px-4 py-4 text-lg border-2 border-gray-300 focus:border-white outline-none transition-colors text-white pr-10 bg-primary cursor-pointer hover:bg-white hover:primary-text"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
                     {selectedProfession || "Select your current profession"}
                   </div>
-                  
-                  {isDropdownOpen && (
-                    <div className=" w-full z-10 border-2 border-gray-300 border-t-0 shadow-[0_0_10px_rgba(255,255,255,0.3)] overflow-hidden bg-primary transition-all duration-300 ease-in-out">
-                      {professionOptions.map((option) => (
-                        <div
-                          key={option.value}
-                          className="w-full px-4 py-4 text-lg text-gray-300 transition-colors  hover:text-gray-600 hover:bg-white hover:primary-text cursor-pointer border-b border-white last:border-b-0"
-                          onClick={() => handleProfessionSelect(option)}
-                        >
-                          {option.label}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+
+                  <div
+                    className={`w-full z-10 border-2 border-gray-300 border-t-0 shadow-[0_0_10px_rgba(255,255,255,0.3)] overflow-hidden bg-primary transition-all duration-400 ease-linear
+      ${isDropdownOpen ? "max-h-96 opacity-100 pointer-events-auto" : "max-h-0 opacity-0 pointer-events-none"}
+    `}
+                    style={{ transitionProperty: "max-height, opacity" }}
+                  >
+                    {professionOptions.map((option) => (
+                      <div
+                        key={option.value}
+                        className="w-full px-4 py-4 text-lg text-gray-300 transition-colors hover:text-gray-600 hover:bg-white hover:primary-text cursor-pointer border-b border-white last:border-b-0"
+                        onClick={() => handleProfessionSelect(option)}
+                      >
+                        {option.label}
+                      </div>
+                    ))}
+                  </div>
+
 
                   <div className="pointer-events-none absolute inset-y-0 bg-primary right-1 flex items-center px-0 h-4 top-6">
-                    <svg 
-                      className={`h-4 md:h-6 w-5 md:w-6 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      viewBox="0 0 20 20" 
+                    <svg
+                      className={`h-4 md:h-6 w-5 md:w-6 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
                       fill="currentColor"
                     >
                       <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />

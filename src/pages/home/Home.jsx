@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import HeroSection from "../../components/home/HeroSection"
 import JourneyToEarnings from "../../components/home/JourneyToEarnings"
 import Navbar from "../../components/home/Navbar"
@@ -6,6 +6,7 @@ import Programs from "../../components/home/Programs"
 import StreamCard from "../../components/home/StreamCard"
 
 const Home = () => {
+
    useEffect(()=>{
       window.scrollTo({ top: 0, behavior: "smooth" })
     },[])

@@ -1,15 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuItems = ["Programs", "Earnings", "Contact", "Privacy Policy", "Login "];
-
+  
+    const [showNavbar, setShowNavbar] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+    useEffect(() => {
+      const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+  
+        if (currentScrollY < lastScrollY || currentScrollY < 10) {
+          // Scrolling up or at the top
+          setShowNavbar(true);
+        } else {
+          // Scrolling down
+          setShowNavbar(false);
+        }
+  
+        setLastScrollY(currentScrollY);
+      };
+  
+      window.addEventListener('scroll', handleScroll, { passive: true });
+  
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, [lastScrollY]);
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full nav-bgcolor text-white z-50 shadow-lg">
+    <nav className={`fixed top-0 left-0 w-full nav-bgcolor text-white z-50 shadow-lg transition-transform duration-300 ease-in-out ${showNavbar ? 'translate-y-0' : '-translate-y-full'
+        }`}>
       <div className="w-full mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 md:py-4">
         {/* Left section */}
         <div className="flex items-center gap-2 sm:gap-3">

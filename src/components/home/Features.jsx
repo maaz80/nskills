@@ -1,5 +1,8 @@
 import { GoArrowRight } from 'react-icons/go';
-import Logo from './Logo.webp'
+import Facebook from './Logos/Facebook.webp'
+import AmazonLogo from './Logos/AmazonLogo.png'
+import AppleLogo from './Logos/AppleLogo.jpg'
+import GoogleLogo from './Logos/GoogleLogo.webp'
 const Features = () => {
     return (
         <div className='relative w-full mt-4 lg:mt-8 overflow-hidden  px-0 md:px-16'>
@@ -113,10 +116,10 @@ const Features = () => {
                             ✅ Each Topic Is Explained In An Easy, Understandable & Practical Way By Mentors From MNCs
                         </span>
                         <div className="flex gap-1">
-                            <img src={Logo} alt="Company 1" className="w-6 h-6 rounded-full object-cover" />
-                            <img src={Logo} alt="Company 2" className="w-6 h-6 rounded-full object-cover" />
-                            <img src={Logo} alt="Company 3" className="w-6 h-6 rounded-full object-cover" />
-                            <img src={Logo} alt="Company 4" className="w-6 h-6 rounded-full object-cover" />
+                            <img src={Facebook} alt="Company 1" className="w-6 h-6 rounded-full object-cover" />
+                            <img src={AmazonLogo} alt="Company 2" className="w-6 h-6 rounded-full object-cover" />
+                            <img src={AppleLogo} alt="Company 3" className="w-6 h-6 rounded-full object-cover" />
+                            <img src={GoogleLogo} alt="Company 4" className="w-6 h-6 rounded-full object-cover" />
                         </div>
                     </li>
                     <li>✅ <span className="text-purple-400">100% Placement Assurance</span>*</li>

@@ -1,6 +1,4 @@
 import Sample from './Sample.mp4'
-import Logo from './Logo.webp'
-import { GoArrowRight } from 'react-icons/go';
 import Features from './Features';
 import { useEffect, useState } from 'react';
 
@@ -36,11 +34,11 @@ const HeroSection = () => {
                         Hi, I'm <span className="text-purple-500">{text}</span>
                     </h1>
 
-                    <p className="text-white text-xs md:text-2xl font-medium leading-relaxed">
+                    <p className="text-white text-sm md:text-2xl font-medium leading-relaxed">
                         AI is replacing humans — then what should you do?
                     </p>
 
-                    <p className="text-white text-xs md:text-2xl font-medium leading-relaxed">
+                    <p className="text-white text-sm md:text-2xl font-medium leading-relaxed">
                         Add tech skills in your career with our
                         <span className="text-purple-500"> 100% Placement Assurance</span>* live + Recorded Certification Programs for new Era of AI in Hinglish.
                     </p>
