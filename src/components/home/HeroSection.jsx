@@ -2,8 +2,23 @@ import Sample from './Sample.mp4'
 import Logo from './Logo.webp'
 import { GoArrowRight } from 'react-icons/go';
 import Features from './Features';
+import { useEffect, useState } from 'react';
 
 const HeroSection = () => {
+      const [text, setText] = useState("");
+  const fullText = "nSkills";
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const typingInterval = setInterval(() => {
+      setText((prev) =>
+        prev.length < fullText.length ? prev + fullText[prev.length] : ""
+      );
+      setIndex((prev) => (prev + 1) % (fullText.length + 1));
+    }, 600); // typing speed
+
+    return () => clearInterval(typingInterval);
+  }, [index]);
     return (
         <section className="relative w-full min-h-screen bg-transparent pt-16  lg:pt-32 pb-3 lg:pb-10">
             {/* Responsive flex: stack on mobile, row on md+ */}
@@ -18,7 +33,7 @@ const HeroSection = () => {
                 {/* Center Content */}
                 <div className="flex-1">
                     <h1 className="text-4xl md:text-8xl font-bold text-white py-4">
-                        Hi, I'm <span className="text-purple-500">nSkills</span>
+                        Hi, I'm <span className="text-purple-500">{text}</span>
                     </h1>
 
                     <p className="text-white text-xs md:text-2xl font-medium leading-relaxed">
