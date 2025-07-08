@@ -4,12 +4,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { GoArrowRight } from "react-icons/go";
-
+import { supabase } from "../../supabase-client";
+import { useToast } from "../../components/customtoast/CustomToast";
+import { handleAuthError, sendOtp } from "../../utils/auth"
+import { COLUMNS, TABLES } from "../../constants/DBSchema";
 const Login = () => {
   const navigate = useNavigate();
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [selectedCountryCode, setSelectedCountryCode] = useState("+91");
   const location = useLocation();
+  const { showToast } = useToast();
   const defaultPhone = location?.state?.phone || "";
   const defaultCountryCode = location?.state?.countryCode || "+91";
   const {
@@ -88,8 +92,86 @@ const Login = () => {
 
   // Modified onSubmit function - add this validation at the beginning
   const onSubmit = async (data) => {
-    navigate("/otp")
+    // Force validation and show errors even if button is disabled
+    const isFormValid = await trigger();
+    if (!data?.phoneNumber || !data?.phoneNumber.trim()) {
+      showToast("Please enter a phone number!", "error", "medium");
+      return;
+    }
+
+    if (!/^[0-9]{10}$/.test(data?.phoneNumber)) {
+      showToast(
+        "Phone number should contain exactly 10 digits with no spaces or symbols.",
+        "error",
+        "medium"
+      );
+      return;
+    }
+
+    const fullPhone = selectedCountryCode + data?.phoneNumber;
+
+    if (!isValidPhoneNumber(fullPhone)) {
+      showToast("Not a valid phone number format", "error", "medium");
+      return;
+    }
+    const toastId = showToast("Sending OTP", "info", "short");
+
+    try {
+      setSendingOtp(true);
+      // localStorage.setItem('referral_code',JSON.stringify(referralCode));
+      const { data: userData, error } = await supabase
+        .from(TABLES?.USER)
+        .select(`${COLUMNS?.USER?.MOBILE_NUMBER},${COLUMNS?.USER?.NAME}`)
+        .eq(COLUMNS?.USER?.MOBILE_NUMBER, fullPhone)
+        .maybeSingle();
+
+      // console.log(userData);
+
+      if (error) {
+        throw error;
+      }
+      const isUserRegistered = userData && !error;
+
+      if (isUserRegistered) {
+        // toast.info("Number already registered! Please login instead.");
+        setIsLogin(true);
+      } else {
+        console.log(error);
+        setIsLogin(false);
+      }
+
+      const { success: otpSuccess, error: otpError } = await sendOtp(fullPhone);
+
+      if (otpError) {
+        throw otpError
+      }
+
+      // console.log(otpData)
+
+      // Navigate to OTP page
+      showToast("OTP sent successfully!", "success", "short");
+      setSendingOtp(false);
+
+      // toast.dismiss(toastId);
+      navigate("/otp", {
+        state: {
+          phone: fullPhone,
+          countryCode: selectedCountryCode,
+          isLogin: isUserRegistered,
+          userName: userData?.name || "",
+          // referral,
+        },
+      });
+    } catch (error) {
+      // console.error("Error during OTP submission:", error);
+      // toast.error("An error occurred while sending the OTP. Please try again.");
+      // toast.dismiss(toastId);
+      handleAuthError(error);
+      showToast("Error in sending otp", "error", "long");
+      setSendingOtp(false);
+    }
   };
+
 
   return (
     <div className="flex flex-col lg:flex-row items-center  h-full bg-black">
@@ -215,13 +297,13 @@ const Login = () => {
             }
           }}
           className={`flex items-center button-spacing-top primary-button-styling justify-center gap-2 ml-auto py-3 text-lg transition duration-300 ${sendingOtp || !isValid
-              ? 'bg-white/20 cursor-not-allowed text-white/50 border border-white/30'
-              : 'bg-white cursor-pointer hover:scale-101 text-black active:scale-98 border border-white'
+            ? 'bg-white/20 cursor-not-allowed text-white/50 border border-white/30'
+            : 'bg-white cursor-pointer hover:scale-101 text-black active:scale-98 border border-white'
             }`}
           disabled={sendingOtp} // Only actually disable when sending OTP
         >
           Next
-         <GoArrowRight className="text-xl" />
+          <GoArrowRight className="text-xl" />
         </button>
 
 

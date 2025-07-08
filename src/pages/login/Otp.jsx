@@ -12,11 +12,32 @@ import { BiPencil } from "react-icons/bi";
 import { FiArrowLeft } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { GoArrowRight } from "react-icons/go";
+import { supabase } from "../../supabase-client";
+import { useToast } from "../../components/customtoast/CustomToast";
+import { useAuth } from "../../context/authContext";
+import {
+  validateName,
+  validateOtp,
+  verifyOtp,
+  handleLogin,
+  handleSignupFlow,
+  handleAuthError,
+  logout,
+} from "../../utils/auth";
 
 const Otp = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { showToast } = useToast();
+  const {
+    cameFromUserDetailsPage,
+    setCameFromUserDetailsPage,
+    setSession,
+    setProceedToUserDetails,
+  } = useAuth();
   const {
     register,
+    trigger,
     handleSubmit,
     watch,
     setValue,
@@ -38,21 +59,100 @@ const Otp = () => {
     handleAutoSubmit();
   }, [otp, isResending]);
 
-  // business logic
+  // Prevent user from going back to OTP page when he has already entered the userDetails page
+  useEffect(() => {
+    const handleBackFromUserDetails = async () => {
+      if (cameFromUserDetailsPage) {
+        // Reset the flag
+        setCameFromUserDetailsPage(false);
+
+        // Logout the user (destroy session)
+        await logout(setSession);
+
+        // Redirect to login
+        navigate("/login", { replace: true });
+      }
+    };
+    handleBackFromUserDetails();
+  }, [cameFromUserDetailsPage, navigate, setCameFromUserDetailsPage]);
+
 
   const [phone, setPhone] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const [countryCode, setCountryCode] = useState("");
   const [userName, setUserName] = useState("");
-
   const navType = useNavigationType();
+
+  useEffect(() => {
+    // on a hard reload or when user clicks Back/Forward, navType === "POP"
+    // and in both cases location.state will be undefined
+    // console.log("navType",navType);
+    if (navType === "POP" || !location?.state) {
+      navigate("/login", { replace: true });
+    } else {
+      console.log(location?.state);
+      setPhone(location?.state?.phone);
+      setIsLogin(location?.state?.isLogin);
+      setCountryCode(location?.state?.countryCode);
+      setUserName(location?.state?.userName || "");
+    }
+  }, [navType, location?.state, navigate]);
 
   const [authenticating, setAuthenticating] = useState(false);
 
   /********************    verify otp ********************/
+  const [otpError, setOtpError] = useState("");
 
   const onSubmit = async (data, event) => {
- navigate("/user_details_form")
+    try {
+      // console.log("Auto submiting");
+      if (authenticating) return;
+      setAuthenticating(true);
+      setOtpError("");
+      const isValid = await trigger();
+      if (!isValid) {
+        setAuthenticating(false);
+        return;
+      }
+
+      if (!isLogin) {
+        const trimmedName = validateName(data?.name);
+        if (!trimmedName) {
+          setAuthenticating(false);
+          showToast("Please enter your name — it can't be empty or just spaces.", "error", "short")
+          return;
+        }
+        data.name = trimmedName;
+      }
+
+      if (!validateOtp(otp)) {
+        setAuthenticating(false);
+        return;
+      }
+
+      const otpData = await verifyOtp(phone, otp);
+
+      localStorage.setItem("user_phone", phone);
+      localStorage.setItem("user_name", data?.name);
+      console.log("otpData", otpData);
+
+      if (isLogin) {
+        await handleLogin(navigate);
+      } else {
+        setProceedToUserDetails(true);
+        await handleSignupFlow(
+          data,
+          event?.nativeEvent?.submitter?.name,
+          phone,
+          navigate
+        );
+      }
+    } catch (error) {
+      setOtpError("Failed to verify OTP. Please try again.");
+      handleAuthError(error);
+    } finally {
+      setAuthenticating(false);
+    }
   };
   // Otp auto detection
   const attemptOtpAutofill = async () => {
@@ -63,7 +163,7 @@ const Otp = () => {
         const abortController = new AbortController();
         const timeout = setTimeout(() => abortController.abort(), 60000);
 
-        const content = await navigator?.credentials.get({
+        const content = await navigator.credentials.get({
           otp: {
             transport: ["sms"],
           },
@@ -73,8 +173,8 @@ const Otp = () => {
         clearTimeout(timeout);
 
         if (content && content.code) {
-          console.log("OTP detected:", content?.code);
-          setValue("otp", content?.code);
+          console.log("OTP detected:", content.code);
+          setValue("otp", content.code);
 
           setTimeout(() => {
             const submitButton = document.querySelector(
@@ -87,7 +187,7 @@ const Otp = () => {
               console.warn("Submit button not found");
             }
           }, 100);
-          toast.success("OTP Filled Automatically");
+          // toast.success("OTP Filled Automatically");
         }
       } catch (error) {
         if (error.name !== "AbortError") {
@@ -104,6 +204,7 @@ const Otp = () => {
   useEffect(() => {
     attemptOtpAutofill();
   }, []);
+
 
   return (
     <div className="flex flex-col lg:flex-row h-full bg-black">
@@ -143,7 +244,7 @@ const Otp = () => {
             </>
           )}
         </div>
-  
+
         <h1 className={`page-heading mb-4 `}>
           {isLogin ? `WELCOME, MAAZ` : "REGISTRATION"}
         </h1>
@@ -180,15 +281,13 @@ const Otp = () => {
                   return true;
                 },
               })}
-              className={`w-full border ${
-                errors.name
-                  ? "border-red-500 focus:border-white focus:ring-white"
-                  : `border-gray-300   ${
-                      isValid
-                        ? " focus:border-green border-green focus:ring-green-400"
-                        : " focus:border-white focus:ring-white"
-                    }`
-              } p-3 outline-none w-full  focus:outline-none focus:ring-1  transition duration-300 `}
+              className={`w-full border ${errors.name
+                ? "border-red-500 focus:border-white focus:ring-white"
+                : `border-gray-300   ${isValid
+                  ? " focus:border-green border-green focus:ring-green-400"
+                  : " focus:border-white focus:ring-white"
+                }`
+                } p-3 outline-none w-full  focus:outline-none focus:ring-1  transition duration-300 `}
             />
             {errors?.name && (
               <p className="text-red-500 text-sm">{errors?.name?.message}</p>
@@ -203,6 +302,7 @@ const Otp = () => {
             value={otp}
             onChange={(value) => {
               setValue("otp", value);
+              setOtpError("");
             }}
             shouldAutoFocus={isLogin}
             numInputs={6}
@@ -217,9 +317,8 @@ const Otp = () => {
               width: "14%",
               height: "60px",
               textAlign: "center",
-              borderBottom: `2px solid ${
-                otp.length === 6 ? "green" : "#d1d5db"
-              }`,
+              borderBottom: `2px solid ${otp.length === 6 ? "green" : "#d1d5db"
+                }`,
               outline: "none",
               color: "#ffffff",
               fontSize: "1.125rem",
@@ -227,9 +326,8 @@ const Otp = () => {
             renderInput={(props) => (
               <input
                 {...props}
-                className={`focus:outline-none focus:ring-2 ${
-                  otp.length === 6 ? "focus:ring-green" : "focus:ring-white"
-                } transition duration-300`}
+                className={`focus:outline-none focus:ring-2 ${otp.length === 6 ? "focus:ring-green" : "focus:ring-white"
+                  } transition duration-300`}
               />
             )}
             inputProps={{
@@ -237,33 +335,35 @@ const Otp = () => {
               autoComplete: "one-time-code",
             }}
           />
+          {otpError && (
+            <p className="text-red-500 text-sm mt-1 ml-1">{otpError}</p>
+          )}
         </div>
         {/* <ResendButton fullPhone={phone} setIsResending={setIsResending} onResendSuccess={() => setValue("otp", "")}/> */}
 
         <div className="flex flex-col w-full  lg:flex-row gap-3 items-center justify-between mt-6">
-      
 
-{/* Submit Button - Login/Sign Up */}
-<button
-  type="submit"
-  name="defaultSignup"
-  className={`
+
+          {/* Submit Button - Login/Sign Up */}
+          <button
+            type="submit"
+            name="defaultSignup"
+            className={`
     flex items-center justify-center gap-2 md:gap-3 ml-auto button-spacing-top primary-button-styling py-3 font-semibold shadow-lg transition duration-300 border-2
-    ${
-      isLogin 
-        ? !(isValid && otp?.length === 6)
-          ? "bg-white/20 text-white/50 border-white/30 cursor-not-allowed"
-          : "bg-white cursor-pointer hover:scale-101 text-black active:scale-98 border border-white"
-        : !(isValid && otp?.length === 6)
-        ? "bg-white/20 text-white/50 border-white/30 cursor-not-allowed"
-        : "bg-white cursor-pointer hover:scale-101 text-black active:scale-98 border border-white"
-    }
+    ${isLogin
+                ? !(isValid && otp?.length === 6)
+                  ? "bg-white/20 text-white/50 border-white/30 cursor-not-allowed"
+                  : "bg-white cursor-pointer hover:scale-101 text-black active:scale-98 border border-white"
+                : !(isValid && otp?.length === 6)
+                  ? "bg-white/20 text-white/50 border-white/30 cursor-not-allowed"
+                  : "bg-white cursor-pointer hover:scale-101 text-black active:scale-98 border border-white"
+              }
   `}
-  disabled={authenticating}
->
-  {isLogin ? "Login" : "Sign Up"}
-  <GoArrowRight className="text-lg md:text-xl" />
-</button>
+            disabled={authenticating}
+          >
+            {isLogin ? "Login" : "Sign Up"}
+            <GoArrowRight className="text-lg md:text-xl" />
+          </button>
         </div>
       </form>
     </div>

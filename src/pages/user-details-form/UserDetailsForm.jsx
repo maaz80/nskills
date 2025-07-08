@@ -1,29 +1,47 @@
-import { FaArrowRight } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useNavigationType } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { GoArrowRight } from "react-icons/go";
+import { handleSignup } from "../../utils/auth";
+import { useAuth } from "../../context/authContext";
 
 const UserDetailsForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [selectedProfession, setSelectedProfession] = useState("");
-  const [selectedIncome, setSelectedIncome] = useState("");
+  const { setCameFromUserDetailsPage } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navType = useNavigationType(); // "PUSH" | "REPLACE" | "POP"
+
+  useEffect(() => {
+    // On POP (refresh, back/forward, direct URL), clear any state:
+    // console.log("Nav Type", navType);
+    if (navType === "POP" || !location?.state) {
+      navigate("/login", { replace: true });
+    } else {
+      setPhone(location?.state?.phone || localStorage.getItem("user_phone"));
+      setName(location?.state?.name || localStorage.getItem("user_name"));
+    }
+  }, [navType, location?.pathname, location?.state, navigate]);
 
   const {
     register,
     handleSubmit,
-    formState: { errors: formErrors },
+    trigger,
+    setValue,
+    watch,
+    formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
   });
 
 
-  const [loading, setLoading] = useState(false);
   const professionOptions = [
     { value: "student", label: "Student" },
     { value: "professional", label: "Working Professional" },
@@ -38,25 +56,44 @@ const UserDetailsForm = () => {
         setIsDropdownOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Select Profession functionality 
   const handleProfessionSelect = (profession) => {
     setSelectedProfession(profession.label);
+    setValue("profession", profession.label, { shouldValidate: true });
     setIsDropdownOpen(false);
     // Clear error if exists
     if (errors.profession) {
       setErrors(prev => ({ ...prev, profession: null }));
     }
   };
+  // Watch for changes in profession and income
+  const professionValue = watch("profession");
+  const incomeValue = watch("income");
 
+  // Back Button check 
+  useEffect(() => {
+    // Mark that we're on the details page
+    setCameFromUserDetailsPage(true);
+
+    return () => {
+      // Jab ye page leave ho, check karein ki user back gaya ya next
+      if (location.pathname === "/otp") {
+        // User back gaya → redirect to login
+        navigate("/login", { replace: true });
+      }
+    };
+  }, []);
+
+  // Navbar hiding on scroll functionality
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY < lastScrollY || currentScrollY < 10) {
+      if (currentScrollY < lastScrollY || currentScrollY < 50) {
         // Scrolling up or at the top
         setShowNavbar(true);
       } else {
@@ -72,14 +109,35 @@ const UserDetailsForm = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  const onSubmit = (data) => {
-    console.log(data); // just to check what values aa rahe hain
-    navigate('/home');
+  // Submit functionality 
+  const onSubmit = async (data) => {
+    if (loading) return;
+    const isValid = await trigger(); // this will show all validation errors
+    if (!isValid) return;
+
+    console.log(data);
+
+    setLoading(true);
+    const res = await handleSignup(
+      {
+        name: name,
+        mobile_number: phone,
+        profession: data?.profession,
+        income_range: data?.income,
+      },
+      true
+    );
+
+    if (res) {
+      navigate("/");
+    } else setLoading(false);
   };
 
+  // Scroll to top on refresh 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }, [])
+
   return (
     <div className="min-h-screen bg-primary">
       {/* Header Section */}
@@ -190,6 +248,10 @@ const UserDetailsForm = () => {
                     className="relative w-full px-4 py-4 text-lg border-2 border-gray-300 focus:border-white outline-none transition-colors text-white pr-10 bg-primary cursor-pointer hover:bg-white hover:primary-text"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
+                    <input
+                      type="hidden"
+                      {...register("profession", { required: "Please select your profession" })}
+                    />
                     {selectedProfession || "Select your current profession"}
                   </div>
 
@@ -243,7 +305,6 @@ const UserDetailsForm = () => {
                         {...register("income", {
                           required: "Please select your income range",
                         })}
-                        onChange={() => setSelectedIncome("0-300000")}
                         className="w-5 h-5 text-white border-2 border-slate-300 focus:ring-orange mr-4"
                       />
                       <div>
@@ -265,7 +326,6 @@ const UserDetailsForm = () => {
                         {...register("income", {
                           required: "Please select your income range",
                         })}
-                        onChange={() => setSelectedIncome("300000-500000")}
                         className="w-5 h-5 text-white border-2 border-slate-300 focus:ring-orange mr-4"
                       />
                       <div>
@@ -287,7 +347,6 @@ const UserDetailsForm = () => {
                         {...register("income", {
                           required: "Please select your income range",
                         })}
-                        onChange={() => setSelectedIncome("500000-700000")}
                         className="w-5 h-5 text-white border-2 border-slate-300 focus:ring-orange mr-4"
                       />
                       <div>
@@ -309,7 +368,6 @@ const UserDetailsForm = () => {
                         {...register("income", {
                           required: "Please select your income range",
                         })}
-                        onChange={() => setSelectedIncome("1000000")}
                         className="w-5 h-5 text-white border-2 border-slate-300 focus:ring-orange mr-4"
                       />
                       <div>
@@ -323,9 +381,9 @@ const UserDetailsForm = () => {
                     </label>
                   </div>
                 </div>
-                {formErrors?.income && (
+                {errors?.income && (
                   <p className="text-red-500 text-sm mt-2">
-                    {formErrors?.income?.message}
+                    {errors?.income?.message}
                   </p>
                 )}
               </div>
@@ -333,13 +391,14 @@ const UserDetailsForm = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className={`cursor-pointer w-full flex items-center justify-center gap-3 bg-white hover:bg-white/90 text-black py-2 lg:py-5 px-2 lg:px-8  text-lg lg:text-xl primary-button-styling transition-colors disabled:bg-white/20 disabled:text-white/50 disabled:cursor-not-allowed disabled:opacity-70 ${!(selectedProfession && selectedIncome) && "bg-white/20 text-white/50 cursor-not-allowed opacity-70"
+                className={`cursor-pointer w-full flex items-center justify-center gap-3 bg-white hover:bg-white/90 text-black py-2 lg:py-5 px-2 lg:px-8 text-lg lg:text-xl primary-button-styling transition-colors disabled:bg-white/20 disabled:text-white/50 disabled:cursor-not-allowed disabled:opacity-70 ${!(professionValue && incomeValue) && "opacity-70"
                   }`}
-                disabled={loading || !(selectedProfession && selectedIncome)}
+                disabled={loading || !(professionValue && incomeValue)}
               >
                 Submit
                 <GoArrowRight className="w-6 h-6" />
               </button>
+
             </form>
           </div>
         </div>

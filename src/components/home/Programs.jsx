@@ -10,6 +10,7 @@ import {
   Building,
   ChevronDown,
 } from "lucide-react";
+import Dropdown from "./Dropdown";
 
 const ProgramsTable = () => {
   const programs = [
@@ -55,48 +56,13 @@ const ProgramsTable = () => {
   const MobileView = () => (
     <div className="w-full mx-auto p-4 lg:p-6 nav-bgcolor border border-gray-700 text-white shadow-2xl space-y-6  lg:hidden">
       {/* Dropdown Header */}
-      <div className="relative">
-        <button
-          onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="w-full flex items-center justify-between nav-bgcolor/50 border border-gray-600 px-5 py-4 text-sm font-semibold hover:from-gray-700 hover:to-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl transform cursor-pointer active:scale-95 ease-in-out"
-        >
-          <div className="flex items-center gap-3">
-            <div className="text-blue-400">
-              {selectedProgram.icon}
-            </div>
-            <span className="text-white">
-              {selectedProgram.name}
-            </span>
-          </div>
-          <ChevronDown
-            className={`w-5 h-5 transition-all duration-300 text-gray-400 ${
-  dropdownOpen ? "rotate-180 text-blue-400" : "rotate-0"
-}`}
-          />
-        </button>
+      <Dropdown
+        items={programs}
+        selectedItem={selectedProgram}
+        onSelect={(program) => setSelectedProgram(program)}
+      />
 
-        <div
-          className={`absolute left-0 mt-2 w-full bg-primary border border-gray-600 overflow-hidden shadow-2xl transition-all duration-1000 ease-linear z-20
-            ${dropdownOpen ? "opacity-100 max-h-80 translate-y-2 pointer-events-auto" : "opacity-0 max-h-0 -translate-y-2 pointer-events-none"}
-          `}
-        >
-          {programs.map((program) => (
-            <button
-              key={program.id}
-              onClick={() => {
-                setSelectedProgram(program);
-                setDropdownOpen(false);
-              }}
-              className={`w-full text-sm text-left px-5 py-4 flex items-center gap-3 hover:nav-bgcolor transition-all duration-600 ${
-                program.id === selectedProgram.id ? "nav-bgcolor border-l-4  border-white " : ""
-              }`}
-            >
-              <div className="text-blue-400">{program.icon}</div>
-              <span className="font-medium">{program.name}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+
 
       {/* Program Details Table */}
       <div className="bg-primary border border-gray-700 overflow-hidden shadow-xl">
@@ -120,9 +86,9 @@ const ProgramsTable = () => {
           </tbody>
         </table>
       </div>
-        <p className="text-gray-400 text-[9px] text-start font-medium">
-          *Placement assurance subject to eligibility & performance.
-        </p>
+      <p className="text-gray-400 text-[9px] text-start font-medium">
+        *Placement assurance subject to eligibility & performance.
+      </p>
 
       {/* Note */}
       {/* <div className="bg-primary border border-gray-700 border-opacity-50 rounded-lg p-4">
