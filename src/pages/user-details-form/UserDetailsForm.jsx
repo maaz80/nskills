@@ -75,18 +75,18 @@ const UserDetailsForm = () => {
   const incomeValue = watch("income");
 
   // Back Button check 
-  useEffect(() => {
+  // useEffect(() => {
     // Mark that we're on the details page
-    setCameFromUserDetailsPage(true);
+    // setCameFromUserDetailsPage(true);
 
-    return () => {
+    // return () => {
       // Jab ye page leave ho, check karein ki user back gaya ya next
-      if (location.pathname === "/otp") {
+      // if (location.pathname === "/otp") {
         // User back gaya → redirect to login
-        navigate("/login", { replace: true });
-      }
-    };
-  }, []);
+        // navigate("/login", { replace: true });
+      // }
+    // };
+  // }, []);
 
   // Navbar hiding on scroll functionality
   useEffect(() => {

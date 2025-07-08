@@ -39,7 +39,7 @@ const Login = () => {
   useEffect(() => {
     if (defaultPhone) setValue("phoneNumber", defaultPhone);
     if (defaultCountryCode) setSelectedCountryCode(defaultCountryCode);
-    window?.history?.replaceState({}, document?.title);
+    // window?.history?.replaceState({}, document?.title);
   }, [defaultPhone, defaultCountryCode, setValue]);
 
   // Country codes list
