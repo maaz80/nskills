@@ -9,7 +9,8 @@ import PrivateRoute from './routes/PrivateRoute'
 const App = () => {
   return (
     <div className='poppins-regular'>
-      <Routes>
+      <Home/>
+      {/* <Routes>
         <Route path='/login' element={
           <ProtectedGuestRoute>
             <Login />
@@ -30,7 +31,7 @@ const App = () => {
             <Home />
           </PrivateRoute>
         } />
-      </Routes>
+      </Routes> */}
     </div>
   )
 }

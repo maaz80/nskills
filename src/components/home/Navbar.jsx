@@ -11,6 +11,27 @@ const Navbar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const {showToast} = useToast()
 
+  // Outside click 
+  useEffect(() => {
+  const handleClickOutside = (event) => {
+    const navbar = document.getElementById("navbar");
+    if (navbar && !navbar.contains(event.target)) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  if (isMobileMenuOpen) {
+    document.addEventListener("click", handleClickOutside);
+  } else {
+    document.removeEventListener("click", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("click", handleClickOutside);
+  };
+}, [isMobileMenuOpen]);
+
+
   // Navbar hidding on scrool functionality 
   useEffect(() => {
     
@@ -49,9 +70,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 w-full nav-bgcolor text-white z-50 shadow-lg transition-transform duration-300 ease-in-out ${showNavbar ? 'translate-y-0' : '-translate-y-full'
-      }`}>
-      <div className="w-full mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 md:py-4">
+   <nav id="navbar" className={`fixed top-0 left-0 w-full nav-bgcolor text-white z-50 shadow-lg transition-transform duration-300 ease-in-out ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
+    <div className="w-full mx-auto flex items-center justify-between px-2 sm:px-6 lg:px-8 py-3 md:py-4">
         {/* Left section */}
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Logo or first letter */}

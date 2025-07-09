@@ -5,7 +5,7 @@ import AppleLogo from './Logos/AppleLogo.jpg'
 import GoogleLogo from './Logos/GoogleLogo.webp'
 const Features = () => {
     return (
-        <div className='relative w-full mt-4 lg:mt-8 overflow-hidden  px-0 md:px-16'>
+        <div className='relative w-full mt-4 lg:mt-8 overflow-hidden  px-0 md:px-6'>
             {/* Sharp Geometric SVG Background */}
             <div className="absolute inset-0 opacity-10">
                 <svg 
@@ -102,7 +102,7 @@ const Features = () => {
             </div>
 
             {/* Content */}
-            <div className="relative z-10 p-6">
+            <div className="relative z-10 p-4 lg:p-6">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold py-6 text-white">
                     WHAT MAKES US UNIQUE FROM OTHER COURSES?
                 </h2>

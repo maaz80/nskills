@@ -20,7 +20,7 @@ const HeroSection = () => {
     return (
         <section className="relative w-full min-h-screen bg-transparent pt-16  lg:pt-32 pb-3 lg:pb-10">
             {/* Responsive flex: stack on mobile, row on md+ */}
-            <div className="w-full flex flex-col md:flex-row items-start md:items-start justify-between gap-8 md:gap-0  px-4 md:px-16">
+            <div className="w-full flex flex-col md:flex-row items-start md:items-start justify-between gap-8 md:gap-0  px-1 md:px-12">
              <div className="flex gap-3">
                    {/* Left Accent */}
                 <div className="flex flex-col items-center pt-4 mr-0 md:mr-4 mb-4 md:mb-0">
@@ -46,7 +46,7 @@ const HeroSection = () => {
              </div>
 
                 {/* Video */}
-                <div className="w-full md:w-1/3 pt-0 lg:pt-4 flex-shrink-0">
+                <div className="w-full md:w-1/3 pt-0 lg:pt-4 px-3 flex-shrink-0">
                     <video
                         autoPlay
                         loop

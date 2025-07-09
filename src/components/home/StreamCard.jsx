@@ -9,7 +9,7 @@ export default function AIStreamCard() {
         <div className="absolute -left-[150%] top-0 w-[50%] h-[300%] bg-gradient-to-tr from-transparent via-white/30 to-transparent rotate-45 group-hover:animate-lightstrip"></div>
       </div> */}
  {/* Light sweep effect overlay */}
-      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 z-10 pointer-events-none"></div>
+      <div className="absolute inset-0  md:group-hover:translate-x-full transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 z-10 pointer-events-none translate-x-0 md:translate-x-[-50%]"></div>
 
       {/* Image Section */}
       <div className="relative h-48 bg-gray-100 overflow-hidden">
